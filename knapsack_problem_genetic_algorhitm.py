@@ -87,7 +87,7 @@ print_row(row_number)
 weights = weights_list[row_number]
 values = values_list[row_number]
 capacity = capacities_list[row_number]
-population = generate_starting_population(10)
+population = generate_starting_population(2)
 
 
 print(population)
@@ -98,3 +98,38 @@ print(capacity)
 for _, chromosome in enumerate(population):
     print_chromosome(chromosome, weights, values)
     print("fitness", fitness(chromosome, weights, values, capacity), "\n")
+
+
+def crossover_1(father: list[int], mother: list[int]):
+    """One-point crossover function returning tuple of crossover point (int) and two children (list[int])"""
+    point = random.randint(1, len(father)-1)
+    offspring_1 = father[:point] + mother[point:]
+    offspring_2 = mother[:point] + father[point:]
+    return point, offspring_1, offspring_2
+
+
+point_test, test_1, test_2 = crossover_1(population[0], population[1])
+print("point:", point_test)
+print("offspring_1:")
+print_chromosome(test_1, weights, values)
+print("offspring_2")
+print_chromosome(test_2, weights, values)
+
+
+def crossover_2(father: list[int], mother: list[int]):
+    """Two-point crossover function returning tuple of crossover points (list[int]) and two children (list[int])"""
+    point_1 = random.randint(1, len(father) - 2)
+    point_2 = random.randint(point_1 + 1, len(father) - 1)
+    offspring_1 = (father[:point_1] +
+                   mother[point_1:point_2] + father[point_2:])
+    offspring_2 = (mother[:point_1] +
+                   father[point_1:point_2] + mother[point_2:])
+    return [point_1, point_2], offspring_1, offspring_2
+
+
+points_test, test_1, test_2 = crossover_2(population[0], population[1])
+print("points:", points_test)
+print("offspring_1:")
+print_chromosome(test_1, weights, values)
+print("offspring_2:")
+print_chromosome(test_2, weights, values)
