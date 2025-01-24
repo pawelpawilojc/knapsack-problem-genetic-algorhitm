@@ -126,3 +126,65 @@ print("offspring_1:")
 print_chromosome(test_1, weights, values)
 print("offspring_2:")
 print_chromosome(test_2, weights, values)
+
+
+# lista 3
+# 2. Opracować algorytm selekcji turniejowej:
+# a. Zaimplementować proces losowego wyboru osobników do turniejów.
+# b. Zaprojektować mechanizm wyboru najlepszego osobnika z każdego turnieju.
+def tournament_selection(population, weights, values, capacity):
+    """Tournament selection returning winners - half of the population"""
+    tournament_winners = []
+    while (len(population) > 0):
+        chromosome_1 = random.choice(population)
+        population.remove(chromosome_1)
+        chromosome_2 = random.choice(population)
+        population.remove(chromosome_2)
+        if fitness(chromosome_1, weights, values, capacity) > fitness(chromosome_2, weights, values, capacity):
+            tournament_winners.append(chromosome_1)
+        else:
+            tournament_winners.append(chromosome_2)
+    return tournament_winners
+
+# 3. Opracować algorytm selekcji proporcjonalnej (metoda ruletki):
+# a. Obliczyć prawdopodobieństwa selekcji na podstawie wartości funkcji
+# przystosowania.
+# b. Zaimplementować mechanizm wyboru osobników na podstawie tych
+# prawdopodobieństw.
+
+
+def roulette_selection(population, weights, values, capacity):
+    """Roulette selection returning only one parent"""
+    roulette_population = []
+    for _, chromosome in enumerate(population):
+        counter = 0
+        while counter < fitness(chromosome, weights, values, capacity):
+            roulette_population.append(chromosome)
+            counter += 1
+    return random.choice(roulette_population)
+
+# 4. Zaprojektować operator mutacji punktowej:
+# a. Określić mechanizm losowego wyboru genów do mutacji.
+# b. Zdefiniować zmiany w wybranym genie zgodnie z założeniami problemu
+
+
+def mutation(population, percent: int):
+    """Mutation of population, returns mutated population based on probability of percent argument (int)"""
+    mutated_population = []
+    for _, chromosome in enumerate(population):
+        mutated_chromosome = []
+        for _, gene in enumerate(chromosome):
+            if random.randint(1, 100) <= percent:
+                print("mutation!")
+                if gene == 0:
+                    gene = 1
+                else:
+                    gene = 0
+            mutated_chromosome.append(gene)
+        mutated_population.append(mutated_chromosome)
+    return mutated_population
+
+
+print(population)
+population = mutation(population, 5)
+print(population)
