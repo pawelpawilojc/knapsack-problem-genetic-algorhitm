@@ -328,6 +328,26 @@ def genetic_algorithm(population: list[list[int]], weights: list[int], values: l
 
         generation_counter += 1
         population = new_population
+
+        fitnessess = []
+        worst_fitness = 0
+        best_fitness = 0
+        for i, chromosome in enumerate(population):
+            temp_fitness = fitness(chromosome, weights, values, capacity)
+            if i == 0:
+                worst_fitness = temp_fitness
+                best_fitness = temp_fitness
+
+            fitnessess.append(temp_fitness)
+            if temp_fitness < worst_fitness:
+                worst_fitness = temp_fitness
+            if temp_fitness > best_fitness:
+                best_fitness = temp_fitness
+        print("generation number = ", generation_counter)
+        print("worst fitness = ", worst_fitness)
+        print("best fitness = ", best_fitness)
+        print("average fitness = ", sum(fitnessess)/len(fitnessess))
+
         population = mutation(population, mutation_percent)
         print(population)
     return 0
@@ -340,4 +360,4 @@ weights, values, capacity = read_data_from_row(201)
 print("solution:")
 solution(weights, values, capacity)
 
-genetic_algorithm(population, weights, values, capacity, 2, 2, 2, 10)
+genetic_algorithm(population, weights, values, capacity, 1, 1, 20, 10)
